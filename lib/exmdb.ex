@@ -71,7 +71,6 @@ defmodule Exmdb do
     end
   end
 
-
   @spec transaction(Env.t, (Txn.t -> any)) :: {:ok, any} | :aborted
   def transaction(%Env{res: res} = env, fun, opts \\ []) do
     timeout = timeout(opts)
