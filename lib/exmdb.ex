@@ -54,7 +54,7 @@ defmodule Exmdb do
   def delete(env_or_txn, key, opts \\ [])
 
   def delete(%Env{dbs: dbs}, key, opts) do
-    {dbi, key_type, val_type} = db_spec(dbs, opts)
+    {dbi, key_type, _val_type} = db_spec(dbs, opts)
     case :elmdb.async_delete(dbi, encode(key, key_type)) do
       :ok         -> env
       :not_found  -> :not_found
@@ -63,7 +63,7 @@ defmodule Exmdb do
   end
 
   def delete(%Txn{type: :rw, res: res, env: env}, key, opts) do
-    {dbi, key_type, val_type} = db_spec(env.dbs, opts)
+    {dbi, key_type, _val_type} = db_spec(env.dbs, opts)
     case :elmdb.txn_delete(res, dbi, encode(key, key_type)) do
       :ok         -> txn
       :not_found  -> :not_found
