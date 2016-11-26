@@ -3,8 +3,8 @@ defmodule Exmdb.Mixfile do
 
   def project do
     [app: :exmdb,
-     version: "0.1.0",
-     elixir: "~> 1.4-dev",
+     version: "0.1.1",
+     elixir: "~> 1.3",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      dialyzer: [plt_add_deps: true],
@@ -16,6 +16,6 @@ defmodule Exmdb.Mixfile do
   end
 
   defp deps do
-    [{:elmdb, "~> 0.3"}]
+    [{:elmdb, "~> 0.4"}]
   end
 end

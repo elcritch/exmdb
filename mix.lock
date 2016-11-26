@@ -1,1 +1,1 @@
-%{"elmdb": {:hex, :elmdb, "0.3.6", "2eddc67d80ca3976eb9e3efcb0bbb8da3cabac9277ce59d52f5fe3f1e4125d63", [:rebar3], []}}
+%{"elmdb": {:hex, :elmdb, "0.4.1", "af0765a4117de44d9cac199d4aed9077ca11d652c43251d4d208f917243d30d7", [:rebar3], []}}

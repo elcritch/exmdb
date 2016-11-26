@@ -50,22 +50,27 @@ defmodule Exmdb do
     end
   end
 
-  @spec put(source, any, any, query_opts) :: source
-  def delete(env_or_txn, key, value, opts \\ [])
-  def delete(%Env{dbs: dbs} = env, key, value, opts) do
+  @spec get(source, any, any, query_opts) :: any
+  def delete(env_or_txn, key, opts \\ [])
+
+  def delete(%Env{dbs: dbs}, key, opts) do
     {dbi, key_type, val_type} = db_spec(dbs, opts)
-    case :elmdb.async_delete(dbi, encode(key, key_type), encode(value, val_type), timeout(opts)) do
-      :ok         -> env
+    case :elmdb.async_delete(dbi, encode(key, key_type)) do
+      {:ok, val}  -> decode(val, val_type)
+      :not_found  -> :not_found
       {:error, e} -> mdb_error(e)
     end
   end
-  def delete(%Txn{type: :rw, res: res, env: env} = txn, key, value, opts) do
+
+  def delete(%Txn{type: :rw, res: res, env: env}, key, opts) do
     {dbi, key_type, val_type} = db_spec(env.dbs, opts)
-    case :elmdb.txn_delete(res, dbi, encode(key, key_type), encode(value, val_type), timeout(opts)) do
-      :ok         -> txn
+    case :elmdb.txn_delete(res, dbi, encode(key, key_type)) do
+      {:ok, val}  -> decode(val, val_type)
+      :not_found  -> :not_found
       {:error, e} -> mdb_error(e)
     end
   end
+
 
   @spec transaction(Env.t, (Txn.t -> any)) :: {:ok, any} | :aborted
   def transaction(%Env{res: res} = env, fun, opts \\ []) do
